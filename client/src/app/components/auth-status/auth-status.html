@@ -1,0 +1,6 @@
+@if (user(); as currentUser) {
+  <div class="auth-status">
+    <span class="auth-status__name">{{ currentUser.name ?? currentUser.email }}</span>
+    <button type="button" class="auth-status__logout" (click)="logout()">Log out</button>
+  </div>
+}

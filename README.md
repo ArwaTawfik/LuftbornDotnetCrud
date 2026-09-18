@@ -62,6 +62,26 @@ Validation failures return a standard `400` problem response with an `errors` ob
 
 ---
 
+## Sign-in with Auth0 (optional, off by default)
+
+The optional SSO task is implemented with **Auth0** (OpenID Connect, authorization code flow with PKCE).
+It is **disabled by default**, so the app above runs with no account or setup. To turn it on:
+
+1. **API:** set `Authentication:Enabled` to `true` (in `src/Api/appsettings.json`, or with the environment
+   variable `Authentication__Enabled=true`). Every API call then requires a valid Auth0 access token.
+2. **Client:** set `enabled: true` in `client/src/app/auth/auth.config.ts`. Users are redirected to Auth0 to sign
+   in, and the token is attached to API calls automatically.
+
+**Demo account** (or use *Sign up* on the login page):
+
+- Email: `arwatawfikk+luftborn@gmail.com`
+- Password: `Te$t2986`
+
+The Auth0 domain, client id and API audience live in those two config files. The API validates tokens with the
+standard JWT bearer middleware, so it works with any OpenID Connect provider, not only Auth0.
+
+---
+
 ## Design
 
 ### Backend (`src/`)
@@ -116,14 +136,14 @@ Moving a card is **optimistic**: the UI updates first and rolls back if the API 
 | Frontend | Angular |
 | Scalable, readable, single-purpose classes | Layered projects, small focused classes |
 | Automated tests | Backend: 15 xUnit tests (validator, service, error handler). Frontend: not yet |
-| SSO (optional) | **Not implemented.** Planned approach below |
+| SSO (optional) | Implemented with Auth0 (OpenID Connect), **off by default**. See "Sign-in with Auth0" |
 
 ---
 
 ## Where it goes next
 
-**Make it multi-user.** Sign in with Microsoft Entra ID (the cloud successor of ADFS): JWT auth on the API,
-an OIDC login and token interceptor in Angular, and an owner on every application so each user sees only their own board.
+**Make it multi-user.** Sign-in is in place; the next step is an owner on every application (a `UserId` from the
+token's `sub` claim, a migration and a query filter) so each user sees only their own board.
 
 **Make it production-ready.** A server database, migrations as a deployment step, Docker, CI (build, test, `ng build`),
 integration tests, and frontend component tests.

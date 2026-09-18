@@ -1,0 +1,25 @@
+.auth-status {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+
+  &__logout {
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--color-text-muted);
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+  }
+}

@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Api.Authentication;
 using Api.ExceptionHandling;
 using Application.Interfaces;
 using Application.Services;
@@ -9,6 +10,11 @@ using DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var authenticationSettings = builder.Configuration
+    .GetSection(AuthenticationSettings.SectionName)
+    .Get<AuthenticationSettings>() ?? new AuthenticationSettings();
+
+builder.Services.AddApiAuthentication(authenticationSettings);
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
@@ -34,7 +40,12 @@ app.UseCors("AllowAngularDev");
 app.UseExceptionHandler();
 app.UseSwagger();
 app.UseSwaggerUI();
-app.MapControllers();
+app.UseApiAuthentication(authenticationSettings);
+
+var controllers = app.MapControllers();
+if (authenticationSettings.Enabled)
+    controllers.RequireAuthorization();
+
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
