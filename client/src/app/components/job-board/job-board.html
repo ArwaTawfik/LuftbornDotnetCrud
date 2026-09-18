@@ -14,7 +14,11 @@
 
         <div class="job-board__cards">
           @for (application of column.applications; track application.id) {
-            <app-job-card [application]="application" (delete)="onDelete($event)" />
+            <app-job-card
+              [application]="application"
+              (delete)="onDelete($event)"
+              (statusChange)="onStatusChange(application, $event)"
+            />
           } @empty {
             <p class="job-board__empty">No applications</p>
           }

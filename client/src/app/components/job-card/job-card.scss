@@ -70,9 +70,21 @@
 
 .pill {
   padding: 0.2rem 0.65rem;
+  border: 0;
   border-radius: 999px;
+  font: inherit;
   font-size: 0.75rem;
   font-weight: 600;
+  appearance: none;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    filter: brightness(0.95);
+    outline: 2px solid currentColor;
+    outline-offset: 1px;
+  }
 }
 
 @each $name, $color in status.$statuses {

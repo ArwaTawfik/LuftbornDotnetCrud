@@ -1,6 +1,11 @@
 import {Component, computed, OnInit, signal} from '@angular/core';
 import {JobApplicationService} from '../../services/job-application.service';
-import {ApplicationStatus, JobApplication} from '../../models/job-application.model';
+import {
+  APPLICATION_STATUSES,
+  ApplicationStatus,
+  JobApplication,
+  UpdateJobApplicationRequest,
+} from '../../models/job-application.model';
 import {RouterLink} from '@angular/router';
 import {JobCard} from '../job-card/job-card';
 
@@ -12,12 +17,10 @@ import {JobCard} from '../job-card/job-card';
 })
 export class JobBoard implements OnInit {
 
-  private readonly statuses: ApplicationStatus[] = ['Applied', 'Interviewing', 'Offer', 'Rejected', 'Withdrawn'];
-
   jobApplications = signal<JobApplication[]>([]);
 
   columns = computed(() =>
-    this.statuses.map(status => ({
+    APPLICATION_STATUSES.map(status => ({
       status,
       slug: status.toLowerCase(),
       applications: this.jobApplications().filter(application => application.status === status),
@@ -30,6 +33,22 @@ export class JobBoard implements OnInit {
   ngOnInit(): void {
     this.jobApplicationService.getAll().subscribe(applications => {
       this.jobApplications.set(applications);
+    });
+  }
+
+  onStatusChange(application: JobApplication, status: ApplicationStatus): void {
+    const request: UpdateJobApplicationRequest = {
+      title: application.title,
+      description: application.description,
+      applicationStartDate: application.applicationStartDate,
+      applicationEndDate: application.applicationEndDate,
+      status,
+    };
+
+    this.jobApplicationService.update(application.id, request).subscribe(() => {
+      this.jobApplications.update(list =>
+        list.map(item => (item.id === application.id ? {...item, status} : item)),
+      );
     });
   }
 

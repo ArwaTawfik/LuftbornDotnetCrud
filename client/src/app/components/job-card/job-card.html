@@ -8,6 +8,10 @@
 
   <footer class="job-card__footer">
     <time class="job-card__date">{{ application().applicationStartDate | date: 'mediumDate' }}</time>
-    <span [class]="statusClass()">{{ application().status }}</span>
+    <select [class]="statusClass()" aria-label="Change status" (change)="onStatusChange($event)">
+      @for (status of statuses; track status) {
+        <option [value]="status" [selected]="status === application().status">{{ status }}</option>
+      }
+    </select>
   </footer>
 </article>
