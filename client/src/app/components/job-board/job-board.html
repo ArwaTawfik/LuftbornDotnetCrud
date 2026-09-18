@@ -4,7 +4,7 @@
     <a class="job-board__new" routerLink="/applications/new">+ New Application</a>
   </header>
 
-  <div class="job-board__columns">
+  <div class="job-board__columns" cdkDropListGroup>
     @for (column of columns(); track column.status) {
       <section [class]="'job-board__column job-board__column--' + column.slug">
         <header class="job-board__column-header">
@@ -12,13 +12,20 @@
           <span class="job-board__count">{{ column.applications.length }}</span>
         </header>
 
-        <div class="job-board__cards">
+        <div
+          class="job-board__cards"
+          cdkDropList
+          [cdkDropListData]="column.status"
+          (cdkDropListDropped)="onDrop($event)"
+        >
           @for (application of column.applications; track application.id) {
-            <app-job-card
-              [application]="application"
-              (delete)="onDelete($event)"
-              (statusChange)="onStatusChange(application, $event)"
-            />
+            <div class="job-board__draggable" cdkDrag [cdkDragData]="application">
+              <app-job-card
+                [application]="application"
+                (delete)="onDelete($event)"
+                (statusChange)="onStatusChange(application, $event)"
+              />
+            </div>
           } @empty {
             <p class="job-board__empty">No applications</p>
           }

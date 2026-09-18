@@ -77,6 +77,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    min-height: 4rem;
+  }
+
+  &__draggable {
+    cursor: grab;
   }
 
   &__empty {

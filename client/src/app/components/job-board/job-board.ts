@@ -7,10 +7,11 @@ import {
   UpdateJobApplicationRequest,
 } from '../../models/job-application.model';
 import {RouterLink} from '@angular/router';
+import {CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {JobCard} from '../job-card/job-card';
 
 @Component({
-  imports: [RouterLink, JobCard],
+  imports: [RouterLink, JobCard, CdkDropListGroup, CdkDropList, CdkDrag],
   selector: 'app-job-board',
   styleUrl: './job-board.scss',
   templateUrl: './job-board.html',
@@ -45,11 +46,25 @@ export class JobBoard implements OnInit {
       status,
     };
 
-    this.jobApplicationService.update(application.id, request).subscribe(() => {
-      this.jobApplications.update(list =>
-        list.map(item => (item.id === application.id ? {...item, status} : item)),
-      );
+    const previousStatus = application.status;
+    this.setStatus(application.id, status);
+
+    this.jobApplicationService.update(application.id, request).subscribe({
+      error: () => this.setStatus(application.id, previousStatus),
     });
+  }
+
+  onDrop(event: CdkDragDrop<ApplicationStatus, ApplicationStatus, JobApplication>): void {
+    if (event.previousContainer === event.container) {
+      return;
+    }
+    this.onStatusChange(event.item.data, event.container.data);
+  }
+
+  private setStatus(id: number, status: ApplicationStatus): void {
+    this.jobApplications.update(list =>
+      list.map(item => (item.id === id ? {...item, status} : item)),
+    );
   }
 
   onDelete(id: number): void {
