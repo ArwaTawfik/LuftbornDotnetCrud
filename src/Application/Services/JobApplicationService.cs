@@ -1,5 +1,6 @@
 using Application.Entities;
 using Application.Interfaces;
+using Application.Validation;
 
 namespace Application.Services;
 
@@ -25,6 +26,8 @@ public class JobApplicationService : IJobApplicationService
     public async Task<JobApplication> CreateAsync(string title, string description, DateTime applicationStartDate,
         DateTime? applicationEndDate)
     {
+        JobApplicationValidator.EnsureEndDateIsNotBeforeStartDate(applicationStartDate, applicationEndDate);
+
         var jobApplication = new JobApplication(title, description, applicationStartDate, applicationEndDate,
             ApplicationStatus.Applied);
         jobApplicationRepository.Create(jobApplication);
@@ -35,6 +38,8 @@ public class JobApplicationService : IJobApplicationService
     public async Task<bool> UpdateAsync(int id, string title, string description, DateTime applicationStartDate,
         DateTime? applicationEndDate, ApplicationStatus status)
     {
+        JobApplicationValidator.EnsureEndDateIsNotBeforeStartDate(applicationStartDate, applicationEndDate);
+
         var jobApplication = await jobApplicationRepository.GetById(id);
 
         if (jobApplication == null)

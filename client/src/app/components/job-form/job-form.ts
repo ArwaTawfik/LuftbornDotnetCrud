@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { JobApplicationService } from '../../services/job-application.service';
 import { CreateJobApplicationRequest, JobApplication } from '../../models/job-application.model';
+import { endNotBeforeStart } from '../../validators/date-range.validator';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
@@ -21,12 +22,15 @@ export class JobForm implements OnInit {
 
   readonly isEdit = this.id !== null;
 
-  readonly form = this.formBuilder.nonNullable.group({
-    title: ['', [Validators.required, Validators.maxLength(100)]],
-    description: ['', [Validators.required, Validators.maxLength(2000)]],
-    applicationStartDate: ['', Validators.required],
-    applicationEndDate: [''],
-  });
+  readonly form = this.formBuilder.nonNullable.group(
+    {
+      title: ['', [Validators.required, Validators.maxLength(100)]],
+      description: ['', [Validators.required, Validators.maxLength(2000)]],
+      applicationStartDate: ['', Validators.required],
+      applicationEndDate: [''],
+    },
+    { validators: endNotBeforeStart },
+  );
 
   ngOnInit(): void {
     if (!this.isEdit) {

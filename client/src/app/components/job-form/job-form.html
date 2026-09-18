@@ -22,6 +22,9 @@
 
     <label for="applicationEndDate">Ended on (optional)</label>
     <input id="applicationEndDate" type="date" formControlName="applicationEndDate" />
+    @if (form.hasError('endBeforeStart') && form.controls.applicationEndDate.touched) {
+      <small class="job-form__error">End date cannot be before the start date.</small>
+    }
 
     <div class="job-form__actions">
       <a routerLink="/">Cancel</a>

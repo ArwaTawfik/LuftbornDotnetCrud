@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Api.ExceptionHandling;
 using Application.Interfaces;
 using Application.Services;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
 builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
 builder.Services.AddSwaggerGen();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularDev", policy =>
@@ -24,9 +27,10 @@ builder.Services.AddCors(options =>
     });
 });
 var app = builder.Build();
+app.UseCors("AllowAngularDev");
+app.UseExceptionHandler();
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseCors("AllowAngularDev");
 app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
