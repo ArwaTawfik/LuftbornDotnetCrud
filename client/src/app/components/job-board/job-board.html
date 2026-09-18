@@ -1,0 +1,9 @@
+<div class="job-board">
+  @for (application of jobApplications(); track application.id) {
+    <div class="job-board__item">
+      <h3>{{ application.title }}</h3>
+      <p>{{ application.description }}</p>
+      <span>{{ application.status }}</span>
+    </div>
+  }
+</div>

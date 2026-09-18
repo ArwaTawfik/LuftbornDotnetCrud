@@ -1,11 +1,9 @@
-import { Component, signal } from '@angular/core';
-
+import { Component } from '@angular/core';
+import { JobBoard } from './components/job-board/job-board'
 @Component({
-  imports: [],
+  imports: [JobBoard],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('client');
-}
+export class App {}
