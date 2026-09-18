@@ -1,7 +1,10 @@
 <article class="job-card">
   <header class="job-card__header">
     <h3 class="job-card__title">{{ application().title }}</h3>
-    <button type="button" class="job-card__delete" aria-label="Delete application" (click)="onDelete()">×</button>
+    <div class="job-card__actions">
+      <a class="job-card__icon-button" [routerLink]="['/applications', application().id, 'edit']" aria-label="Edit application">✎</a>
+      <button type="button" class="job-card__icon-button job-card__icon-button--danger" aria-label="Delete application" (click)="onDelete()">×</button>
+    </div>
   </header>
 
   <p class="job-card__description">{{ application().description }}</p>

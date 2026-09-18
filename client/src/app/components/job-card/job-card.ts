@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, input, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { APPLICATION_STATUSES, ApplicationStatus, JobApplication } from '../../models/job-application.model';
 
 @Component({
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   selector: 'app-job-card',
   styleUrl: './job-card.scss',
   templateUrl: './job-card.html',

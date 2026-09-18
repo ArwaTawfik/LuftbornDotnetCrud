@@ -1,5 +1,5 @@
 <section class="job-form">
-  <h1>New application</h1>
+  <h1>{{ isEdit ? 'Edit application' : 'New application' }}</h1>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <label for="title">Title</label>

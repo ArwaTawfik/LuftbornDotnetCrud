@@ -28,17 +28,28 @@
     font-weight: 600;
   }
 
-  &__delete {
+  &__actions {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  &__icon-button {
     border: 0;
     background: transparent;
     color: var(--color-text-muted);
-    font-size: 1.25rem;
-    line-height: 1;
+    font-size: 1.1rem;
+    line-height: 1.4;
     padding: 0 0.35rem;
     border-radius: 6px;
+    text-decoration: none;
     cursor: pointer;
 
     &:hover {
+      color: var(--color-primary);
+      background: #e8e8fb;
+    }
+
+    &--danger:hover {
       color: #dc2626;
       background: #fee2e2;
     }

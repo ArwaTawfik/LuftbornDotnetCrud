@@ -5,4 +5,5 @@ import { JobForm } from './components/job-form/job-form';
 export const routes: Routes = [
   { path: '', component: JobBoard },
   { path: 'applications/new', component: JobForm },
+  { path: 'applications/:id/edit', component: JobForm },
 ];
