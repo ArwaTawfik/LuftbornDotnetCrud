@@ -1,15 +1,18 @@
+using System.Text.Json.Serialization;
 using Application.Interfaces;
 using Application.Services;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
-builder.Services.AddScoped<IJobApplicationService, JobApplicationService>(); 
+builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
@@ -23,7 +26,13 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
-app.MapControllers();
 app.UseCors("AllowAngularDev");
+app.MapControllers();
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.Migrate();
+    DbInitializer.Seed(context);
+}
 
 app.Run();
