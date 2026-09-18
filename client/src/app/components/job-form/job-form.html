@@ -1,0 +1,31 @@
+<section class="job-form">
+  <h1>New application</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label for="title">Title</label>
+    <input id="title" formControlName="title" />
+    @if (form.controls.title.touched && form.controls.title.invalid) {
+      <small class="job-form__error">Title is required (max 100 characters).</small>
+    }
+
+    <label for="description">Description</label>
+    <textarea id="description" rows="4" formControlName="description"></textarea>
+    @if (form.controls.description.touched && form.controls.description.invalid) {
+      <small class="job-form__error">Description is required (max 2000 characters).</small>
+    }
+
+    <label for="applicationStartDate">Applied on</label>
+    <input id="applicationStartDate" type="date" formControlName="applicationStartDate" />
+    @if (form.controls.applicationStartDate.touched && form.controls.applicationStartDate.invalid) {
+      <small class="job-form__error">Start date is required.</small>
+    }
+
+    <label for="applicationEndDate">Ended on (optional)</label>
+    <input id="applicationEndDate" type="date" formControlName="applicationEndDate" />
+
+    <div class="job-form__actions">
+      <a routerLink="/">Cancel</a>
+      <button type="submit">Save</button>
+    </div>
+  </form>
+</section>

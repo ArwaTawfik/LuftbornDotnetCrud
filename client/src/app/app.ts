@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { JobBoard } from './components/job-board/job-board'
+import { RouterOutlet } from '@angular/router';
+
 @Component({
-  imports: [JobBoard],
+  imports: [RouterOutlet],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',

@@ -1,0 +1,21 @@
+.job-form {
+  max-width: 480px;
+  margin: 2rem auto;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__error {
+    color: #b3261e;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+}
