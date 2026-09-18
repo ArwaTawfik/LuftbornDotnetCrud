@@ -4,4 +4,7 @@
     <Project Path="src/Application/Application.csproj" />
     <Project Path="src/DataAccess/DataAccess.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Application.Tests/Application.Tests.csproj" />
+  </Folder>
 </Solution>
