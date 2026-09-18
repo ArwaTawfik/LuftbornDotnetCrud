@@ -1,0 +1,13 @@
+<article class="job-card">
+  <header class="job-card__header">
+    <h3 class="job-card__title">{{ application().title }}</h3>
+    <button type="button" class="job-card__delete" aria-label="Delete application" (click)="onDelete()">×</button>
+  </header>
+
+  <p class="job-card__description">{{ application().description }}</p>
+
+  <footer class="job-card__footer">
+    <time class="job-card__date">{{ application().applicationStartDate | date: 'mediumDate' }}</time>
+    <span [class]="statusClass()">{{ application().status }}</span>
+  </footer>
+</article>

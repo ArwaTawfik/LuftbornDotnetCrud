@@ -1,0 +1,89 @@
+$statuses: (
+  applied: #3b82f6,
+  interviewing: #f59e0b,
+  offer: #16a34a,
+  rejected: #dc2626,
+  withdrawn: #6b7280,
+);
+
+.job-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__delete {
+    border: 0;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 0 0.35rem;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      color: #dc2626;
+      background: #fee2e2;
+    }
+  }
+
+  &__description {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+
+  &__date {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+}
+
+.pill {
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+@each $name, $color in $statuses {
+  .pill--#{$name} {
+    color: $color;
+    background: color-mix(in srgb, #{$color} 12%, white);
+  }
+}

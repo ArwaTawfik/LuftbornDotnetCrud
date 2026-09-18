@@ -1,13 +1,12 @@
-<div class="job-board">
-  @for (application of jobApplications(); track application.id) {
-    <div class="job-board__item">
+<section class="job-board">
+  <header class="job-board__header">
+    <h1>Applications</h1>
+    <a class="job-board__new" routerLink="/applications/new">+ New Application</a>
+  </header>
 
-      <h3>{{ application.title }}</h3>
-      <p>{{ application.description }}</p>
-      <span>{{ application.status }}</span>
-      <button type="button" (click)="onDelete(application.id)">Delete</button>
-    </div>
-  }
-
-  <div><a routerLink="/applications/new">+ New Application</a></div>
-</div>
+  <div class="job-board__list">
+    @for (application of jobApplications(); track application.id) {
+      <app-job-card [application]="application" (delete)="onDelete($event)" />
+    }
+  </div>
+</section>
