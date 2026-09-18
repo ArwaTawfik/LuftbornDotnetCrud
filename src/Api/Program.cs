@@ -2,6 +2,8 @@ using System.Text.Json.Serialization;
 using Api.ExceptionHandling;
 using Application.Interfaces;
 using Application.Services;
+using Application.Validation;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 
@@ -14,6 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
 builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
+builder.Services.AddScoped<IValidator<JobApplication>, JobApplicationValidator>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();

@@ -1,16 +1,19 @@
 using Application.Entities;
 using Application.Interfaces;
-using Application.Validation;
+using FluentValidation;
 
 namespace Application.Services;
 
 public class JobApplicationService : IJobApplicationService
 {
     private readonly IJobApplicationRepository jobApplicationRepository;
+    private readonly IValidator<JobApplication> jobApplicationValidator;
 
-    public JobApplicationService(IJobApplicationRepository jobApplicationRepository)
+    public JobApplicationService(IJobApplicationRepository jobApplicationRepository,
+        IValidator<JobApplication> jobApplicationValidator)
     {
         this.jobApplicationRepository = jobApplicationRepository;
+        this.jobApplicationValidator = jobApplicationValidator;
     }
 
     public Task<List<JobApplication>> GetAllAsync()
@@ -26,10 +29,10 @@ public class JobApplicationService : IJobApplicationService
     public async Task<JobApplication> CreateAsync(string title, string description, DateTime applicationStartDate,
         DateTime? applicationEndDate)
     {
-        JobApplicationValidator.EnsureEndDateIsNotBeforeStartDate(applicationStartDate, applicationEndDate);
-
         var jobApplication = new JobApplication(title, description, applicationStartDate, applicationEndDate,
             ApplicationStatus.Applied);
+        await jobApplicationValidator.ValidateAndThrowAsync(jobApplication);
+
         jobApplicationRepository.Create(jobApplication);
         await jobApplicationRepository.SaveChangeAsync();
         return jobApplication;
@@ -38,8 +41,6 @@ public class JobApplicationService : IJobApplicationService
     public async Task<bool> UpdateAsync(int id, string title, string description, DateTime applicationStartDate,
         DateTime? applicationEndDate, ApplicationStatus status)
     {
-        JobApplicationValidator.EnsureEndDateIsNotBeforeStartDate(applicationStartDate, applicationEndDate);
-
         var jobApplication = await jobApplicationRepository.GetById(id);
 
         if (jobApplication == null)
@@ -49,6 +50,7 @@ public class JobApplicationService : IJobApplicationService
         jobApplication.ApplicationStartDate = applicationStartDate;
         jobApplication.ApplicationEndDate = applicationEndDate;
         jobApplication.Status = status;
+        await jobApplicationValidator.ValidateAndThrowAsync(jobApplication);
 
         jobApplicationRepository.Update(jobApplication);
         await jobApplicationRepository.SaveChangeAsync();

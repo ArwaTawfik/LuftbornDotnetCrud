@@ -1,4 +1,4 @@
-using Application.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,13 +18,12 @@ public class GlobalExceptionHandler : IExceptionHandler
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
         CancellationToken cancellationToken)
     {
-        if (exception is DomainValidationException validationException)
+        if (exception is ValidationException validationException)
         {
             httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-            var errors = new Dictionary<string, string[]>
-            {
-                [validationException.PropertyName] = [validationException.Message]
-            };
+            var errors = validationException.Errors
+                .GroupBy(error => error.PropertyName)
+                .ToDictionary(group => group.Key, group => group.Select(error => error.ErrorMessage).ToArray());
             var validationProblem = new ValidationProblemDetails(errors)
             {
                 Status = StatusCodes.Status400BadRequest,

@@ -1,13 +1,13 @@
-using Application.Exceptions;
+using FluentValidation;
 
 namespace Application.Validation;
 
-public static class JobApplicationValidator
+public class JobApplicationValidator : AbstractValidator<JobApplication>
 {
-    public static void EnsureEndDateIsNotBeforeStartDate(DateTime applicationStartDate, DateTime? applicationEndDate)
+    public JobApplicationValidator()
     {
-        if (applicationEndDate < applicationStartDate)
-            throw new DomainValidationException(nameof(JobApplication.ApplicationEndDate),
-                "End date cannot be before the start date.");
+        RuleFor(application => application.ApplicationEndDate)
+            .GreaterThanOrEqualTo(application => application.ApplicationStartDate)
+            .WithMessage("End date cannot be before the start date.");
     }
 }
