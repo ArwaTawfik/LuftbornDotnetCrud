@@ -4,9 +4,22 @@
     <a class="job-board__new" routerLink="/applications/new">+ New Application</a>
   </header>
 
-  <div class="job-board__list">
-    @for (application of jobApplications(); track application.id) {
-      <app-job-card [application]="application" (delete)="onDelete($event)" />
+  <div class="job-board__columns">
+    @for (column of columns(); track column.status) {
+      <section [class]="'job-board__column job-board__column--' + column.slug">
+        <header class="job-board__column-header">
+          <h2>{{ column.status }}</h2>
+          <span class="job-board__count">{{ column.applications.length }}</span>
+        </header>
+
+        <div class="job-board__cards">
+          @for (application of column.applications; track application.id) {
+            <app-job-card [application]="application" (delete)="onDelete($event)" />
+          } @empty {
+            <p class="job-board__empty">No applications</p>
+          }
+        </div>
+      </section>
     }
   </div>
 </section>

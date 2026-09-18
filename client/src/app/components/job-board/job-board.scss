@@ -1,5 +1,7 @@
+@use '../../../styles/statuses' as status;
+
 .job-board {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem 1rem;
 
@@ -28,9 +30,65 @@
     }
   }
 
-  &__list {
+  &__columns {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(240px, 1fr);
     gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--color-column);
+    border-radius: var(--radius);
+    border-top: 4px solid var(--color-text-muted);
+  }
+
+  &__column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.25rem;
+
+    h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+  }
+
+  &__count {
+    min-width: 1.5rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__empty {
+    margin: 0.5rem 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+}
+
+@each $name, $color in status.$statuses {
+  .job-board__column--#{$name} {
+    border-top-color: $color;
   }
 }

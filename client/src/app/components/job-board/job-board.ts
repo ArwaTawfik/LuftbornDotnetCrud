@@ -1,6 +1,6 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, computed, OnInit, signal} from '@angular/core';
 import {JobApplicationService} from '../../services/job-application.service';
-import {JobApplication} from '../../models/job-application.model';
+import {ApplicationStatus, JobApplication} from '../../models/job-application.model';
 import {RouterLink} from '@angular/router';
 import {JobCard} from '../job-card/job-card';
 
@@ -12,7 +12,17 @@ import {JobCard} from '../job-card/job-card';
 })
 export class JobBoard implements OnInit {
 
+  private readonly statuses: ApplicationStatus[] = ['Applied', 'Interviewing', 'Offer', 'Rejected', 'Withdrawn'];
+
   jobApplications = signal<JobApplication[]>([]);
+
+  columns = computed(() =>
+    this.statuses.map(status => ({
+      status,
+      slug: status.toLowerCase(),
+      applications: this.jobApplications().filter(application => application.status === status),
+    })),
+  );
 
   constructor(private jobApplicationService: JobApplicationService) {
   }

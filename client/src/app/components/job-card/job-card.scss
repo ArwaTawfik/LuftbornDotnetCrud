@@ -1,10 +1,4 @@
-$statuses: (
-  applied: #3b82f6,
-  interviewing: #f59e0b,
-  offer: #16a34a,
-  rejected: #dc2626,
-  withdrawn: #6b7280,
-);
+@use '../../../styles/statuses' as status;
 
 .job-card {
   display: flex;
@@ -81,7 +75,7 @@ $statuses: (
   font-weight: 600;
 }
 
-@each $name, $color in $statuses {
+@each $name, $color in status.$statuses {
   .pill--#{$name} {
     color: $color;
     background: color-mix(in srgb, #{$color} 12%, white);
